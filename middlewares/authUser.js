@@ -7,7 +7,7 @@ export const authUser = (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized", success: false });
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        res.user = decoded.id;
+        req.user = decoded.id;
         next();
     } catch (error) {
         console.error("Authentication error:", error);

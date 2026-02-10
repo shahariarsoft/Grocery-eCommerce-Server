@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 export const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        if (!name || !email, !password){
+        if (!name || !email || !password){
             return res
             .status(400)
             .json({ message: "All fields are required", success: false });
@@ -47,17 +47,21 @@ export const registerUser = async (req, res) => {
     }
 };
 
+
+
 // Login user : api/user/login
 export const loginUser=async(req,res)=>{
     try {
         const { email, password } = req.body;
         if ( !email || !password) {
-            return res.status(400)
+            return res
+            .status(400)
             .json({ message: "All fields are required", success: false});
         }
         const user=await User.findOne({email});
         if (!user) {
-            return res.status(400)
+            return res
+            .status(400)
             .json({ message: "Invalid email or password", success: false});
         }
         const isMatch = await bcrypt.compare(password, user.password);
@@ -77,7 +81,7 @@ export const loginUser=async(req,res)=>{
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.json({
-            message: "Login successfully",
+            message: "Logged successfully",
             success: true,
             user: {
                 name: user.name,
@@ -90,6 +94,8 @@ export const loginUser=async(req,res)=>{
     }
 };
 
+
+
 // Logout user : /api/user/logout
 export const logoutUser = async ( req, res) => {
     try {
@@ -98,9 +104,30 @@ export const logoutUser = async ( req, res) => {
             secure: process.env.NODE_ENV == "production",
             sameSite: process.env.NODE_ENV == "production" ? "none" : "Strict",
         });
-        res.json({ message: "User Log out successfully", success: true });
+        res.json({ message: "User Logged out successfully", success: true });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Internal server error "});
+        res.status(500).json({ message: "Internal server error"});
+    }
+};
+
+
+
+// Check auth user : api/user/is-auth
+export const isAuthUser = async (req, res) => {
+    try {
+        const userId = req.user;
+
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized", success: false});
+        }
+        const user = await User.findById(userId).select("-password");
+        res.json({
+            success: true,
+            user,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
