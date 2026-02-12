@@ -7,11 +7,13 @@ dotenv.config();
 
 import userRoutes from "./routes/user.routes.js"
 import sellerRoutes from "./routes/seller.routes.js"
+import { connectCLoudinary } from "./config/cloudinary.js";
 
 
 const app = express();
 
 connectDB()
+connectCLoudinary();
 const allowedOrigins = ["http://localhost:5173"];
 
 // middlewares
