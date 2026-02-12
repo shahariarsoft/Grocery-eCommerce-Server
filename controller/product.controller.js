@@ -54,12 +54,12 @@ export const getProductById = async (req, res) => {
 };
 
 // change stoke :/api/product/stock
-export const changeStoke = async (req, res) => {
+export const changeStock = async (req, res) => {
     try {
         const { id, inStock } =req.body;
         const product = await Product.findByIdAndUpdate(
             id,
-            { inStoke },
+            { inStock },
             { new: true }
         );
         if (!product) {
