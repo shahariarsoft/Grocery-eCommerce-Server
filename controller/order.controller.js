@@ -35,3 +35,23 @@ export const placeOrderCOD = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+// order details for individual user :/api/order/user
+export const getUserOrders = async (req, res) => {
+    try {
+        const userId = req.user;
+        const orders = await Order.find({
+            userId,
+            $or: [{ paymentMethod: "COD" }, { isPaid: true }],
+        })
+        .populate("items.product address")
+        .sort({ createdAt: -1});
+        res.status(200).json({
+            success: true,
+            orders,
+        });
+    } catch (error) {
+        console.error("Error fetching user orders:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
