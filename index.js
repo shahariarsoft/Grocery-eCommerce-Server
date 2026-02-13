@@ -9,7 +9,10 @@ import userRoutes from "./routes/user.routes.js"
 import sellerRoutes from "./routes/seller.routes.js"
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
+import OrderRoutes from "./routes/order.routes.js";
 import { connectCLoudinary } from "./config/cloudinary.js";
+
+
 
 
 const app = express();
@@ -32,6 +35,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/order", OrderRoutes);
+
 
 
 
