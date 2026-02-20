@@ -1,8 +1,7 @@
 import express from "express";
-import { authUser } from "../middlewares/authUser.js";
-import { updateCart } from '../controller/cart.controller.js';
-
+import { updateCart } from "../controller/cart.controller.js";
+import authUser from "../middlewares/authUser.js";
 
 const router = express.Router();
-router.post("/update",authUser, updateCart)
+router.post("/update", authUser, updateCart);
 export default router;
